@@ -8,8 +8,8 @@
 ## Technical support is provided by the CXT (CXTHHHHH.com). (based on the original version of Vicer)
 
 ## Magic Modify version author:
-## Default root password: cxthhhhh.com
-## WebSite: https://cxthhhhh.com
+## Default root password: autosre.xyz
+## WebSite: https://zutosre.xyz
 ## Written By CXT (CXTHHHHH.com)
 
 ## Original version author:
