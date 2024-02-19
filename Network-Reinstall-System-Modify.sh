@@ -77,7 +77,7 @@ else
     echo '当前系统 是 CentOS/Rocky/Oracle/RHEL'
     echo 'Current system is CentOS/Rocky/Oracle/RHEL'
     command yum > /dev/null && yum install -y xz openssl gawk file wget curl
-    command dnf > /dev/null && dnf install -y xz openssl gawk file wget curl
+    command dnf > /dev/null 2 &1 && dnf install -y xz openssl gawk file wget curl
     sleep 3s
 fi
 
@@ -104,9 +104,14 @@ case `uname -m` in aarch64|arm64) CXTaddVER="arm64";; x86|i386|i686) CXTaddVER="
 
 CXTmyipapi=$(wget --no-check-certificate -qO- ipinfo.io | grep "\"country\": \"CN\"")
 if [[ "$CXTmyipapi" != "" ]];then
-  CXTisCN="Yes"
+    CXTisCN="Yes"
 fi
-
+ORG=$(wget --no-check-certificate -qO- ipinfo.io | grep "\"org\":")
+if echo $ORG |grep Tencent > /dev/null 2 &1;then
+    [ -z $CXTaddLine ] && CXTaddLine="--ip-dns 183.60.82.98 183.60.83.19"
+elif echo $ORG |grep Alibaba > /dev/null 2 &1 && [ $CXTisCN == "Yes" ];then
+    [ -z $CXTaddLine ] && CXTaddLine="--ip-dns 223.5.5.5 223.5.5.5"
+fi
 if [ $CXTisCN != "Yes" ];then
     echo "Core Download（Global）..."
     #wget -O
