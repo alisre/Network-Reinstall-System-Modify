@@ -76,8 +76,8 @@ if [ -f "/usr/bin/apt-get" ];then
 else
     echo '当前系统 是 CentOS/Rocky/Oracle/RHEL'
     echo 'Current system is CentOS/Rocky/Oracle/RHEL'
-    yum install -y xz openssl gawk file wget curl
-    dnf install -y xz openssl gawk file wget curl
+    command yum > /dev/null && yum install -y xz openssl gawk file wget curl
+    command dnf > /dev/null && dnf install -y xz openssl gawk file wget curl
     sleep 3s
 fi
 
@@ -102,7 +102,7 @@ fi
 
 case `uname -m` in aarch64|arm64) CXTaddVER="arm64";; x86|i386|i686) CXTaddVER="i386";; x86_64|amd64) CXTaddVER="amd64";; *) CXTaddVER="";; esac
 
-CXTmyipapi=$(wget --no-check-certificate -qO- ipinfo.io | grep "\"country\":\"CN\"")
+CXTmyipapi=$(wget --no-check-certificate -qO- ipinfo.io | grep "\"country\": \"CN\"")
 if [[ "$CXTmyipapi" != "" ]];then
   CXTisCN="Yes"
 fi
