@@ -107,10 +107,10 @@ if [[ "$CXTmyipapi" != "" ]];then
     CXTisCN="Yes"
 fi
 ORG=$(wget --no-check-certificate -qO- ipinfo.io | grep "\"org\":")
-if echo $ORG |grep Tencent > /dev/null 2 &1;then
-    [ -z $CXTaddLine ] && CXTaddLine="--ip-dns 183.60.82.98 183.60.83.19"
-elif echo $ORG |grep Alibaba > /dev/null 2 &1 && [ $CXTisCN == "Yes" ];then
-    [ -z $CXTaddLine ] && CXTaddLine="--ip-dns 223.5.5.5 223.5.5.5"
+if echo $ORG |grep Tencent > /dev/null 2>&1;then
+    [ -z $CXTaddLine ] && CXTaddLine="--ip-dns 183.60.82.98 --ip-dns 183.60.83.19"
+elif echo $ORG |grep Alibaba > /dev/null 2>&1 && [ $CXTisCN == "Yes" ];then
+    [ -z $CXTaddLine ] && CXTaddLine="--ip-dns 223.5.5.5 --ip-dns 223.5.5.5"
 fi
 if [ $CXTisCN != "Yes" ];then
     echo "Core Download（Global）..."
