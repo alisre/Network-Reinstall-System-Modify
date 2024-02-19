@@ -264,10 +264,10 @@ function diskType(){
 
 function getGrub(){
   Boot="${1:-/boot}"
-  folders=`find "$Boot" -type d -name "grub*" 2>/dev/null |head -n2`
+  folders=`find "$Boot" -type d -name "grub*" 2>/dev/null |head -n2` 
   [ -n "$folders" ] || return
   for i in $folders;do
-    ls -1 "$i" 2>/dev/null |grep '^grub.conf$\|^grub.cfg$'
+    ls -1 "$i" 2>/dev/null |grep '^grub.conf$\|^grub.cfg$' >/dev/null
     [ $? -eq 0 ] && export folder=$i && break
   done
   fileName=`ls -1 "$folder" 2>/dev/null |grep '^grub.conf$\|^grub.cfg$'`
