@@ -264,8 +264,12 @@ function diskType(){
 
 function getGrub(){
   Boot="${1:-/boot}"
-  folder=`find "$Boot" -type d -name "grub*" 2>/dev/null |head -n1`
-  [ -n "$folder" ] || return
+  folders=`find "$Boot" -type d -name "grub*" 2>/dev/null |head -n2`
+  [ -n "$folders" ] || return
+  for i in $folders;do
+    ls -1 "$i" 2>/dev/null |grep '^grub.conf$\|^grub.cfg$'
+    [ $? -eq 0 ] && export folder=$i && break
+  done
   fileName=`ls -1 "$folder" 2>/dev/null |grep '^grub.conf$\|^grub.cfg$'`
   if [ -z "$fileName" ]; then
     ls -1 "$folder" 2>/dev/null |grep -q '^grubenv$'
