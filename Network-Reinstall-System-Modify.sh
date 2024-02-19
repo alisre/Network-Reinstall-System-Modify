@@ -76,8 +76,8 @@ if [ -f "/usr/bin/apt-get" ];then
 else
     echo '当前系统 是 CentOS/Rocky/Oracle/RHEL'
     echo 'Current system is CentOS/Rocky/Oracle/RHEL'
-    command yum > /dev/null && yum install -y xz openssl gawk file wget curl
-    command dnf > /dev/null 2 &1 && dnf install -y xz openssl gawk file wget curl
+    yum install -y xz openssl gawk file wget curl
+    dnf install -y xz openssl gawk file wget curl
     sleep 3s
 fi
 
