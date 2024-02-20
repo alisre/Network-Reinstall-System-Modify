@@ -144,10 +144,10 @@ if echo $ORG |grep Tencent > /dev/null 2>&1;then
     UbuntuMirrors="--mirror http://mirrors.tencentyun.com/ubuntu/"
 elif echo $ORG |grep Alibaba > /dev/null 2>&1 && [ $CXTisCN == "Yes" ];then
     [ -z $CXTaddLine ] && CXTaddLine="--ip-dns 223.5.5.5"
-    CentOSMirrors="--mirror http://mirrors.aliyun.com/centos/"
-    CentOSVaultMirrors="--mirror http://mirrors.aliyun.com/centos-vault/"
-    DebianMirrors="--mirror http://mirrors.aliyun.com/debian/"
-    UbuntuMirrors="--mirror http://mirrors.aliyun.com/ubuntu/"
+    CentOSMirrors="--mirror http://mirrors.cloud.aliyuncs.com/centos/"
+    CentOSVaultMirrors="--mirror http://mirrors.cloud.aliyuncs.com/centos-vault/"
+    DebianMirrors="--mirror http://mirrors.cloud.aliyuncs.com/debian/"
+    UbuntuMirrors="--mirror http://mirrors.cloud.aliyuncs.com/ubuntu/"
 elif echo $ORG |grep Huawei > /dev/null 2>&1;then
     ResIp=$(grep "nameserver" /etc/resolv.conf|grep -v '127.0.0'|head -1|awk '{print $2}')
     if [ -z $ResIp] ;then
