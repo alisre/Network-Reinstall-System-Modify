@@ -136,19 +136,19 @@ else
 fi
 
 ORG=$(wget --no-check-certificate -qO- ipinfo.io | grep "\"org\":")
-if echo $ORG |grep Tencent > /dev/null 2>&1;then
+if [ $CXTisCN == "Yes" ] && echo $ORG |grep Tencent > /dev/null 2>&1;then
     [ -z $CXTaddLine ] && CXTaddLine="--ip-dns 183.60.83.19"
     CentOSMirrors="--mirror http://mirrors.tencentyun.com/centos/"
     CentOSVaultMirrors="--mirror http://mirrors.tencentyun.com/centos-vault/"
     DebianMirrors="--mirror http://mirrors.tencentyun.com/debian/"
     UbuntuMirrors="--mirror http://mirrors.tencentyun.com/ubuntu/"
-elif echo $ORG |grep Alibaba > /dev/null 2>&1 && [ $CXTisCN == "Yes" ];then
+elif [ $CXTisCN == "Yes" ] && echo $ORG |grep Alibaba > /dev/null 2>&1 && [ $CXTisCN == "Yes" ];then
     [ -z $CXTaddLine ] && CXTaddLine="--ip-dns 223.5.5.5"
     CentOSMirrors="--mirror http://mirrors.cloud.aliyuncs.com/centos/"
     CentOSVaultMirrors="--mirror http://mirrors.cloud.aliyuncs.com/centos-vault/"
     DebianMirrors="--mirror http://mirrors.cloud.aliyuncs.com/debian/"
     UbuntuMirrors="--mirror http://mirrors.cloud.aliyuncs.com/ubuntu/"
-elif echo $ORG |grep Huawei > /dev/null 2>&1;then
+elif [ $CXTisCN == "Yes" ] && echo $ORG |grep Huawei > /dev/null 2>&1;then
     ResIp=$(grep "nameserver" /etc/resolv.conf|grep -v '127.0.0'|head -1|awk '{print $2}')
     if [ -z $ResIp] ;then
        ResIp=$(grep "nameserver" /run/systemd/resolve/resolv.conf|grep -v '127.0.0'|head -1|awk '{print $2}')
