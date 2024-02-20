@@ -121,10 +121,10 @@ else
     CXTrandom=$RANDOM
     if [ $[CXTrandom%2] == "0" ];then
         echo "本次随机使用阿里源"
-        CentOSMirrors="--mirror http://mirrors.aliyun.com/centos/"
-        CentOSVaultMirrors="--mirror http://mirrors.aliyun.com/centos-vault/"
-        DebianMirrors="--mirror http://mirrors.aliyun.com/debian/"
-        UbuntuMirrors="--mirror http://mirrors.aliyun.com/ubuntu/"
+        CentOSMirrors="--mirror http://mirrors.163.com/centos/"
+        CentOSVaultMirrors="--mirror http://mirrors.163.com/centos-vault/"
+        DebianMirrors="--mirror http://mirrors.163.com/debian/"
+        UbuntuMirrors="--mirror http://mirrors.163.com/ubuntu/"
     else
         echo "本次随机使用清华源"
         CentOSMirrors="--mirror http://mirrors.tuna.tsinghua.edu.cn/centos/"
