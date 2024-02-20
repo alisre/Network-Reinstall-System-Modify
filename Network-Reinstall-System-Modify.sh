@@ -149,9 +149,9 @@ elif [ $CXTisCN == "Yes" ] && echo $ORG |grep Alibaba > /dev/null 2>&1 && [ $CXT
     DebianMirrors="--mirror http://mirrors.cloud.aliyuncs.com/debian/"
     UbuntuMirrors="--mirror http://mirrors.cloud.aliyuncs.com/ubuntu/"
 elif [ $CXTisCN == "Yes" ] && echo $ORG |grep Huawei > /dev/null 2>&1;then
-    ResIp=$(grep "nameserver" /etc/resolv.conf|grep -v '127.0.0'|head -1|awk '{print $2}')
-    if [ -z $ResIp] ;then
-       ResIp=$(grep "nameserver" /run/systemd/resolve/resolv.conf|grep -v '127.0.0'|head -1|awk '{print $2}')
+    ResIp=$(grep "nameserver " /etc/resolv.conf|grep -v '127.0.0'|head -1|awk '{print $2}')
+    if [ -z $ResIp ] ;then
+       ResIp=$(grep "nameserver " /run/systemd/resolve/resolv.conf|grep -v '127.0.0'|head -1|awk '{print $2}')
     fi
     CXTaddLine="--ip-dns $ResIp"
     CentOSMirrors="--mirror https://mirrors.huaweicloud.com/centos/"
