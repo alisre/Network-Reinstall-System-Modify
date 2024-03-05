@@ -138,13 +138,13 @@ fi
 
 ORG=$(wget --no-check-certificate -qO- ipinfo.io | grep "\"org\":")
 if [ $CXTisCN == "Yes" ] && echo $ORG |grep Tencent > /dev/null 2>&1;then
-    [ -z $CXTaddLine ] && CXTaddLine="--ip-dns 183.60.83.19"
+    [ -z $CXTaddLine ] && CXTaddLine="--ip-dns 183.60.83.19 183.60.82.98"
     CentOSMirrors="--mirror http://mirrors.tencentyun.com/centos/"
     CentOSVaultMirrors="--mirror http://mirrors.tencentyun.com/centos-vault/"
     DebianMirrors="--mirror http://mirrors.tencentyun.com/debian/"
     UbuntuMirrors="--mirror http://mirrors.tencentyun.com/ubuntu/"
 elif [ $CXTisCN == "Yes" ] && echo $ORG |grep Alibaba > /dev/null 2>&1 && [ $CXTisCN == "Yes" ];then
-    [ -z $CXTaddLine ] && CXTaddLine="--ip-dns 223.5.5.5"
+    [ -z $CXTaddLine ] && CXTaddLine="--ip-dns 223.5.5.5 223.6.6.6"
     CentOSMirrors="--mirror http://mirrors.cloud.aliyuncs.com/centos/"
     CentOSVaultMirrors="--mirror http://mirrors.cloud.aliyuncs.com/centos-vault/"
     DebianMirrors="--mirror http://mirrors.cloud.aliyuncs.com/debian/"
