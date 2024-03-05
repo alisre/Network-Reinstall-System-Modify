@@ -1,20 +1,10 @@
 #!/bin/bash
 
 ## License: GPL
-## The CXT version of one-click network reinstallation system Magic revision.
-## It can reinstall CentOS, Rocky, Debian, Ubuntu, Oracle and other General Operating Systems (continuously added) over the network in one click.
-## It can reinstall Windwos 2022, 2019, 2016, 2012R2, Windows 10, 11 and other Windows systems (continuously added) via the network in one click.
-## Support GRUB or GRUB2 for installing a clean minimal system.
-## Technical support is provided by the CXT (CXTHHHHH.com). (based on the original version of Vicer)
-
-## Magic Modify version author:
+## It can reinstall Debian, Ubuntu, CentOS system with network.
 ## Default root password: autosre.xyz
-## WebSite: https://zutosre.xyz
-## Written By CXT (CXTHHHHH.com)
-
-## Original version author:
-## Blog: https://moeclub.org
-## Written By MoeClub.org (Vicer)
+## Blog: https://autosre.xyz
+## Written By autosre
 
 export tmpVER=''
 export tmpDIST=''
@@ -264,12 +254,8 @@ function diskType(){
 
 function getGrub(){
   Boot="${1:-/boot}"
-  folders=`find "$Boot" -type d -name "grub*" 2>/dev/null |head -n2` 
-  [ -n "$folders" ] || return
-  for i in $folders;do
-    ls -1 "$i" 2>/dev/null |grep '^grub.conf$\|^grub.cfg$' >/dev/null
-    [ $? -eq 0 ] && export folder=$i && break
-  done
+  folder=`find "$Boot" -type d -name "grub*" 2>/dev/null |head -n1`
+  [ -n "$folder" ] || return
   fileName=`ls -1 "$folder" 2>/dev/null |grep '^grub.conf$\|^grub.cfg$'`
   if [ -z "$fileName" ]; then
     ls -1 "$folder" 2>/dev/null |grep -q '^grubenv$'
@@ -371,7 +357,7 @@ if [[ -n "$tmpDIST" ]]; then
         [[ "$isDigital" == '9' ]] && DIST='stretch';
         [[ "$isDigital" == '10' ]] && DIST='buster';
         [[ "$isDigital" == '11' ]] && DIST='bullseye';
-        # [[ "$isDigital" == '12' ]] && DIST='bookworm';
+        [[ "$isDigital" == '12' ]] && DIST='bookworm';
       }
     }
     LinuxMirror=$(selectMirror "$Relese" "$DIST" "$VER" "$tmpMirror")
@@ -388,7 +374,7 @@ if [[ -n "$tmpDIST" ]]; then
         [[ "$isDigital" == '16.04' ]] && DIST='xenial';
         [[ "$isDigital" == '18.04' ]] && DIST='bionic';
         [[ "$isDigital" == '20.04' ]] && DIST='focal';
-        [[ "$isDigital" == '22.04' ]] && DIST='jammy';
+        # [[ "$isDigital" == '22.04' ]] && DIST='jammy';
       }
     }
     LinuxMirror=$(selectMirror "$Relese" "$DIST" "$VER" "$tmpMirror")
@@ -566,7 +552,7 @@ if [[ "$loaderMode" == "0" ]]; then
   [[ "$setInterfaceName" == "1" ]] && Add_OPTION="net.ifnames=0 biosdevname=0" || Add_OPTION=""
   [[ "$setIPv6" == "1" ]] && Add_OPTION="$Add_OPTION ipv6.disable=1"
   
-  lowMem || Add_OPTION="$Add_OPTION lowmem=+0"
+  lowMem || Add_OPTION="$Add_OPTION lowmem=+2"
 
   if [[ "$linux_relese" == 'debian' ]] || [[ "$linux_relese" == 'ubuntu' ]]; then
     BOOT_OPTION="auto=true $Add_OPTION hostname=$linux_relese domain=$linux_relese quiet"
@@ -625,11 +611,18 @@ for COMP in `echo -en 'gzip\nlzma\nxz'`
 $UNCOMP < /tmp/$NewIMG | cpio --extract --verbose --make-directories --no-absolute-filenames >>/dev/null 2>&1
 
 if [[ "$linux_relese" == 'debian' ]] || [[ "$linux_relese" == 'ubuntu' ]]; then
+CurrentKernelVersion=`ls -1 ./lib/modules 2>/dev/null |head -n1`
+[ -n "$CurrentKernelVersion" ] && SelectLowmem="di-utils-exit-installer,driver-injection-disk-detect,fdisk-udeb,netcfg-static,parted-udeb,partman-auto,partman-ext3,ata-modules-${CurrentKernelVersion}-di,efi-modules-${CurrentKernelVersion}-di,sata-modules-${CurrentKernelVersion}-di,scsi-modules-${CurrentKernelVersion}-di,scsi-nic-modules-${CurrentKernelVersion}-di" || SelectLowmem=""
 cat >/tmp/boot/preseed.cfg<<EOF
-d-i debian-installer/locale string en_US
+d-i debian-installer/locale string en_US.UTF-8
+d-i debian-installer/country string US
+d-i debian-installer/language string en
+
 d-i console-setup/layoutcode string us
 
 d-i keyboard-configuration/xkb-keymap string us
+d-i lowmem/low note
+d-i anna/choose_modules_lowmem multiselect $SelectLowmem
 
 d-i netcfg/choose_interface select $interfaceSelect
 
@@ -690,6 +683,7 @@ tasksel tasksel/first multiselect minimal
 d-i pkgsel/update-policy select none
 d-i pkgsel/include string openssh-server
 d-i pkgsel/upgrade select none
+d-i apt-setup/services-select multiselect
 
 popularity-contest popularity-contest/participate boolean false
 
@@ -789,22 +783,22 @@ EOF
 fi
 
 find . | cpio -H newc --create --verbose | gzip -9 > /tmp/initrd.img;
-cp -f /tmp/initrd.img /boot/initrd.img || sudo cp -f /tmp/initrd.img /boot/initrd.img
-cp -f /tmp/vmlinuz /boot/vmlinuz || sudo cp -f /tmp/vmlinuz /boot/vmlinuz
-
-chown root:root $GRUBDIR/$GRUBFILE
-chmod 444 $GRUBDIR/$GRUBFILE
 
 if [[ "$loaderMode" == "0" ]]; then
+  cp -f /tmp/initrd.img /boot/initrd.img || sudo cp -f /tmp/initrd.img /boot/initrd.img
+  cp -f /tmp/vmlinuz /boot/vmlinuz || sudo cp -f /tmp/vmlinuz /boot/vmlinuz
+
+  chown root:root $GRUBDIR/$GRUBFILE
+  chmod 444 $GRUBDIR/$GRUBFILE
+
   sleep 3 && reboot || sudo reboot >/dev/null 2>&1
 else
   rm -rf "$HOME/loader"
   mkdir -p "$HOME/loader"
-  cp -rf "/boot/initrd.img" "$HOME/loader/initrd.img"
-  cp -rf "/boot/vmlinuz" "$HOME/loader/vmlinuz"
-  [[ -f "/boot/initrd.img" ]] && rm -rf "/boot/initrd.img"
-  [[ -f "/boot/vmlinuz" ]] && rm -rf "/boot/vmlinuz"
+  cp -rf "/tmp/initrd.img" "$HOME/loader/initrd.img"
+  cp -rf "/tmp/vmlinuz" "$HOME/loader/vmlinuz"
+  rm -rf "/tmp/initrd.img"
+  rm -rf "/tmp/vmlinuz"
   echo && ls -AR1 "$HOME/loader"
 fi
-
 
