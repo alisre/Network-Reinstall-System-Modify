@@ -132,6 +132,7 @@ else
         DebianMirrors="--mirror http://mirrors.tuna.tsinghua.edu.cn/debian/"
         UbuntuMirrors="--mirror http://mirrors.tuna.tsinghua.edu.cn/ubuntu/"
     fi
+    CXTaddLine="--ip-dns 223.5.5.5 119.29.29.29"
 
 fi
 
