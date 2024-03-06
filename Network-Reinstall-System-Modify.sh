@@ -120,17 +120,17 @@ else
     wget --no-check-certificate -qO ~/Core_Install.sh 'https://mirror.ghproxy.com/https://github.com/auto-sre/Network-Reinstall-System-Modify/raw/master/CoreShell/Core_Install_v5.3.sh' && chmod a+x ~/Core_Install.sh
     CXTrandom=$RANDOM
     if [ $[CXTrandom%2] == "0" ];then
-        echo "本次随机使用阿里源"
-        CentOSMirrors="--mirror http://mirrors.163.com/centos/"
-        CentOSVaultMirrors="--mirror http://mirrors.163.com/centos-vault/"
-        DebianMirrors="--mirror http://mirrors.163.com/debian/"
-        UbuntuMirrors="--mirror http://mirrors.163.com/ubuntu/"
+        echo "本次随机使用163源"
+        CentOSMirrors="--mirror http://mirrors.163.com/centos"
+        CentOSVaultMirrors="--mirror http://mirrors.163.com/centos-vault"
+        DebianMirrors="--mirror http://mirrors.163.com/debian"
+        UbuntuMirrors="--mirror http://mirrors.163.com/ubuntu"
     else
         echo "本次随机使用清华源"
-        CentOSMirrors="--mirror http://mirrors.tuna.tsinghua.edu.cn/centos/"
-        CentOSVaultMirrors="--mirror http://mirrors.tuna.tsinghua.edu.cn/centos-vault/"
-        DebianMirrors="--mirror http://mirrors.tuna.tsinghua.edu.cn/debian/"
-        UbuntuMirrors="--mirror http://mirrors.tuna.tsinghua.edu.cn/ubuntu/"
+        CentOSMirrors="--mirror http://mirrors.tuna.tsinghua.edu.cn/centos"
+        CentOSVaultMirrors="--mirror http://mirrors.tuna.tsinghua.edu.cn/centos-vault"
+        DebianMirrors="--mirror http://mirrors.tuna.tsinghua.edu.cn/debian"
+        UbuntuMirrors="--mirror http://mirrors.tuna.tsinghua.edu.cn/ubuntu"
     fi
     CXTaddLine="--ip-dns \"223.5.5.5 119.29.29.29\""
 
@@ -139,26 +139,26 @@ fi
 ORG=$(wget --no-check-certificate -qO- ipinfo.io | grep "\"org\":")
 if [ $CXTisCN == "Yes" ] && echo $ORG |grep Tencent > /dev/null 2>&1;then
     [ -z $CXTaddLine ] && CXTaddLine="--ip-dns \"183.60.83.19 183.60.82.98\""
-    CentOSMirrors="--mirror http://mirrors.tencentyun.com/centos/"
-    CentOSVaultMirrors="--mirror http://mirrors.tencentyun.com/centos-vault/"
-    DebianMirrors="--mirror http://mirrors.tencentyun.com/debian/"
-    UbuntuMirrors="--mirror http://mirrors.tencentyun.com/ubuntu/"
+    CentOSMirrors="--mirror http://mirrors.tencentyun.com/centos"
+    CentOSVaultMirrors="--mirror http://mirrors.tencentyun.com/centos-vault"
+    DebianMirrors="--mirror http://mirrors.tencentyun.com/debian"
+    UbuntuMirrors="--mirror http://mirrors.tencentyun.com/ubuntu"
 elif [ $CXTisCN == "Yes" ] && echo $ORG |grep Alibaba > /dev/null 2>&1 && [ $CXTisCN == "Yes" ];then
     [ -z $CXTaddLine ] && CXTaddLine="--ip-dns \"223.5.5.5 223.6.6.6\""
-    CentOSMirrors="--mirror http://mirrors.cloud.aliyuncs.com/centos/"
-    CentOSVaultMirrors="--mirror http://mirrors.cloud.aliyuncs.com/centos-vault/"
-    DebianMirrors="--mirror http://mirrors.cloud.aliyuncs.com/debian/"
-    UbuntuMirrors="--mirror http://mirrors.cloud.aliyuncs.com/ubuntu/"
+    CentOSMirrors="--mirror http://mirrors.cloud.aliyuncs.com/centos"
+    CentOSVaultMirrors="--mirror http://mirrors.cloud.aliyuncs.com/centos-vault"
+    DebianMirrors="--mirror http://mirrors.cloud.aliyuncs.com/debian"
+    UbuntuMirrors="--mirror http://mirrors.cloud.aliyuncs.com/ubuntu"
 elif [ $CXTisCN == "Yes" ] && echo $ORG |grep Huawei > /dev/null 2>&1;then
     ResIp=$(grep "nameserver " /etc/resolv.conf|grep -v '127.0.0'|head -1|awk '{print $2}')
     if [ -z $ResIp ] ;then
        ResIp=$(grep "nameserver " /run/systemd/resolve/resolv.conf|grep -v '127.0.0'|head -1|awk '{print $2}')
     fi
     CXTaddLine="--ip-dns $ResIp"
-    CentOSMirrors="--mirror https://mirrors.huaweicloud.com/centos/"
-    CentOSVaultMirrors="--mirror https://mirrors.huaweicloud.com/centos-vault/"
-    DebianMirrors="--mirror https://mirrors.huaweicloud.com/debian/"
-    UbuntuMirrors="--mirror https://mirrors.huaweicloud.com/ubuntu/"
+    CentOSMirrors="--mirror https://mirrors.huaweicloud.com/centos"
+    CentOSVaultMirrors="--mirror https://mirrors.huaweicloud.com/centos-vault"
+    DebianMirrors="--mirror https://mirrors.huaweicloud.com/debian"
+    UbuntuMirrors="--mirror https://mirrors.huaweicloud.com/ubuntu"
 fi
 
 echo "---------------------------------------------------------------------------------------------------------------------"
@@ -271,18 +271,18 @@ echo "                                                                "
   echo "                                                                "
   read N
   case $N in
-    1) echo -e "\nInstall...CentOS 8(UEFI)\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; bash ~/Core_Install.sh -a -v 64 -firmware -dd "https://odc.cxthhhhh.com/d/SyStem/Rocky/Rocky_8.X_x64_UEFI_NetInstallation_Stable_v6.9.vhd.gz" $DebianMirrors "$CXTaddLine" ;;
-    2) echo -e "\nInstall...Debian 11(UEFI)\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; bash ~/Core_Install.sh -d 11 -a -v 64 -firmware $DebianMirrors "$CXTaddLine" ;;
-    3) echo -e "\nInstall...Debian 10(UEFI)\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; bash ~/Core_Install.sh -d 10 -a -v 64 -firmware $DebianMirrors "$CXTaddLine" ;; 
-    4) echo -e "\nInstall...OpenWRT (UEFI)\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; bash ~/Core_Install.sh -a -v 64 -firmware -dd "https://odc.cxthhhhh.com/d/SyStem/OpenWRT-Virtualization-Servers/Stable/openwrt-x86-64-generic-squashfs-combined-efi.img.gz" $DebianMirrors "$CXTaddLine" ;;
-    5) echo -e "\nInstall...Oracle 9(UEFI)\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; bash ~/Core_Install.sh -a -v 64 -firmware -dd "https://odc.cxthhhhh.com/d/SyStem/Oracle/Oracle_9.X_x64_UEFI_NetInstallation_Stable_v1.9.vhd.gz" $DebianMirrors "$CXTaddLine" ;;
-    6) echo -e "\nInstall...Rocky 9(UEFI)\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; bash ~/Core_Install.sh -a -v 64 -firmware -dd "https://odc.cxthhhhh.com/d/SyStem/Rocky/Rocky_8.X_x64_UEFI_NetInstallation_Stable_v6.9.vhd.gz" $DebianMirrors "$CXTaddLine" ;;
-    7) echo -e "\nInstall...Rocky 8(UEFI)\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; bash ~/Core_Install.sh -a -v 64 -firmware -dd "https://odc.cxthhhhh.com/d/SyStem/Rocky/Rocky_8.X_x64_UEFI_NetInstallation_Stable_v6.9.vhd.gz" $DebianMirrors "$CXTaddLine" ;;
-    8) echo -e "\nInstall...Ubuntu 22(UEFI)\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; bash ~/Core_Install.sh -u 22.04 -a -v 64 -firmware $UbuntuMirrors  "$CXTaddLine" ;;
-    9) echo -e "\nInstall...Ubuntu 20(UEFI)\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; bash ~/Core_Install.sh -u 20.04 -a -v 64 -firmware $UbuntuMirrors  "$CXTaddLine" ;;
-    21) echo -e "\nInstall...Windows Server 2022(UEFI)\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; bash ~/Core_Install.sh -a -v 64 -firmware -dd "https://odc.cxthhhhh.com/d/SyStem/Windows_DD_Disks/Disk_Windows_Server_2022_DataCenter_CN_v2.12_UEFI.vhd.gz" $DebianMirrors "$CXTaddLine" ;;
-    22) echo -e "\nInstall...Windows Server 2019(UEFI)\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; bash ~/Core_Install.sh -a -v 64 -firmware -dd "https://odc.cxthhhhh.com/d/SyStem/Windows_DD_Disks/Disk_Windows_Server_2019_DataCenter_CN_v5.1_UEFI.vhd.gz" $DebianMirrors "$CXTaddLine" ;;
-    23) echo -e "\nInstall...Windows Server 2012 R2(UEFI)\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; bash ~/Core_Install.sh -a -v 64 -firmware -dd "https://odc.cxthhhhh.com/d/SyStem/Windows_DD_Disks/Disk_Windows_Server_2012R2_DataCenter_CN_v4.29_UEFI.vhd.gz" $DebianMirrors "$CXTaddLine" ;;
+    1) echo -e "\nInstall...CentOS 8(UEFI)\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; eval bash ~/Core_Install.sh -a -v 64 -firmware -dd "https://odc.cxthhhhh.com/d/SyStem/Rocky/Rocky_8.X_x64_UEFI_NetInstallation_Stable_v6.9.vhd.gz" $DebianMirrors "$CXTaddLine" ;;
+    2) echo -e "\nInstall...Debian 11(UEFI)\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ;eval  bash ~/Core_Install.sh -d 11 -a -v 64 -firmware $DebianMirrors "$CXTaddLine" ;;
+    3) echo -e "\nInstall...Debian 10(UEFI)\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; eval bash ~/Core_Install.sh -d 10 -a -v 64 -firmware $DebianMirrors "$CXTaddLine" ;; 
+    4) echo -e "\nInstall...OpenWRT (UEFI)\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; eval bash ~/Core_Install.sh -a -v 64 -firmware -dd "https://odc.cxthhhhh.com/d/SyStem/OpenWRT-Virtualization-Servers/Stable/openwrt-x86-64-generic-squashfs-combined-efi.img.gz" $DebianMirrors "$CXTaddLine" ;;
+    5) echo -e "\nInstall...Oracle 9(UEFI)\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; eval bash ~/Core_Install.sh -a -v 64 -firmware -dd "https://odc.cxthhhhh.com/d/SyStem/Oracle/Oracle_9.X_x64_UEFI_NetInstallation_Stable_v1.9.vhd.gz" $DebianMirrors "$CXTaddLine" ;;
+    6) echo -e "\nInstall...Rocky 9(UEFI)\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; eval bash ~/Core_Install.sh -a -v 64 -firmware -dd "https://odc.cxthhhhh.com/d/SyStem/Rocky/Rocky_8.X_x64_UEFI_NetInstallation_Stable_v6.9.vhd.gz" $DebianMirrors "$CXTaddLine" ;;
+    7) echo -e "\nInstall...Rocky 8(UEFI)\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; eval bash ~/Core_Install.sh -a -v 64 -firmware -dd "https://odc.cxthhhhh.com/d/SyStem/Rocky/Rocky_8.X_x64_UEFI_NetInstallation_Stable_v6.9.vhd.gz" $DebianMirrors "$CXTaddLine" ;;
+    8) echo -e "\nInstall...Ubuntu 22(UEFI)\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; eval bash ~/Core_Install.sh -u 22.04 -a -v 64 -firmware $UbuntuMirrors  "$CXTaddLine" ;;
+    9) echo -e "\nInstall...Ubuntu 20(UEFI)\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; eval bash ~/Core_Install.sh -u 20.04 -a -v 64 -firmware $UbuntuMirrors  "$CXTaddLine" ;;
+    21) echo -e "\nInstall...Windows Server 2022(UEFI)\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; eval bash ~/Core_Install.sh -a -v 64 -firmware -dd "https://odc.cxthhhhh.com/d/SyStem/Windows_DD_Disks/Disk_Windows_Server_2022_DataCenter_CN_v2.12_UEFI.vhd.gz" $DebianMirrors "$CXTaddLine" ;;
+    22) echo -e "\nInstall...Windows Server 2019(UEFI)\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; eval bash ~/Core_Install.sh -a -v 64 -firmware -dd "https://odc.cxthhhhh.com/d/SyStem/Windows_DD_Disks/Disk_Windows_Server_2019_DataCenter_CN_v5.1_UEFI.vhd.gz" $DebianMirrors "$CXTaddLine" ;;
+    23) echo -e "\nInstall...Windows Server 2012 R2(UEFI)\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; eval bash ~/Core_Install.sh -a -v 64 -firmware -dd "https://odc.cxthhhhh.com/d/SyStem/Windows_DD_Disks/Disk_Windows_Server_2012R2_DataCenter_CN_v4.29_UEFI.vhd.gz" $DebianMirrors "$CXTaddLine" ;;
     99) echo "更多系统前往CXT博客及ODC查看。https://www.cxthhhhh.com"; exit 1;;
     100) echo -e "\nInstall...Bare-metal System Deployment Platform(Advanced Users)\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; bash ~/Core_Install.sh -a -v 64 -firmware -dd "https://odc.cxthhhhh.com/d/SyStem/Bare-metal_System_Deployment_Platform/CXT_Bare-metal_System_Deployment_Platform_v3.6.vhd.gz" $DebianMirrors "$CXTaddLine" ;;
     0) exit 0;;
@@ -331,22 +331,22 @@ echo "                                                                "
   echo "                                                                "
   read N
   case $N in
-    1) echo -e "\nInstall...CentOS 9\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; bash ~/Core_Install.sh -a -v 64 -dd "https://odc.cxthhhhh.com/d/SyStem/CentOS/CentOS_9.X_x64_Legacy_NetInstallation_Stable_v1.6.vhd.gz" $DebianMirrors "$CXTaddLine" ;;
-    2) echo -e "\nInstall...CentOS 8\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; bash ~/Core_Install.sh -a -v 64 -dd "https://odc.cxthhhhh.com/d/SyStem/CentOS/CentOS_8.X_x64_Legacy_NetInstallation_Stable_v6.8.vhd.gz" $DebianMirrors "$CXTaddLine" ;;
-    3) echo -e "\nInstall...CentOS 7\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; bash ~/Core_Install.sh -a -v 64 -dd "https://odc.cxthhhhh.com/d/SyStem/CentOS/CentOS_7.X_x64_Legacy_NetInstallation_Final_v9.8.vhd.gz" $DebianMirrors "$CXTaddLine" ;;
-    4) echo -e "\nInstall...Debian 11\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; bash ~/Core_Install.sh -d 10 -a -v 64 $DebianMirrors "$CXTaddLine" ;;
-    5) echo -e "\nInstall...Debian 10\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; bash ~/Core_Install.sh -d 11 -a -v 64 $DebianMirrors "$CXTaddLine" ;; 
-    6) echo -e "\nInstall...Debian 10\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; bash ~/Core_Install.sh -d 12 -a -v 64 $DebianMirrors "$CXTaddLine" ;; 
-    7) echo -e "\nInstall...OpenWRT\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; bash ~/Core_Install.sh -a -v 64 -dd "https://odc.cxthhhhh.com/d/SyStem/OpenWRT-Virtualization-Servers/Stable/openwrt-x86-64-generic-squashfs-combined.img.gz" $DebianMirrors "$CXTaddLine" ;;
-    8) echo -e "\nInstall...Oracle 9\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; bash ~/Core_Install.sh -a -v 64 -dd "https://odc.cxthhhhh.com/d/SyStem/Oracle/Oracle_9.X_x64_Legacy_NetInstallation_Stable_v1.8.vhd.gz" $DebianMirrors "$CXTaddLine" ;;
-    9) echo -e "\nInstall...Rocky 9\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; bash ~/Core_Install.sh -a -v 64 -dd "https://odc.cxthhhhh.com/d/SyStem/Rocky/Rocky_8.X_x64_Legacy_NetInstallation_Stable_v6.8.vhd.gz" $DebianMirrors "$CXTaddLine" ;;
-    10) echo -e "\nInstall...Rocky 8\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; bash ~/Core_Install.sh -a -v 64 -dd "https://odc.cxthhhhh.com/d/SyStem/Rocky/Rocky_8.X_x64_Legacy_NetInstallation_Stable_v6.8.vhd.gz" $DebianMirrors "$CXTaddLine" ;;
-    11) echo -e "\nInstall...Ubuntu 22\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; bash ~/Core_Install.sh -u 22.04 -a -v 64 $UbuntuMirrors  "$CXTaddLine" ;;
-    12) echo -e "\nInstall...Ubuntu 20\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; bash ~/Core_Install.sh -u 20.04 -a -v 64 $UbuntuMirrors  "$CXTaddLine" ;;
-    21) echo -e "\nInstall...Windows Server 2022\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; bash ~/Core_Install.sh -a -v 64 -dd "https://odc.cxthhhhh.com/d/SyStem/Windows_DD_Disks/Disk_Windows_Server_2022_DataCenter_CN_v2.12.vhd.gz" $DebianMirrors "$CXTaddLine" ;;
-    22) echo -e "\nInstall...Windows Server 2019\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; bash ~/Core_Install.sh -a -v 64 -dd "https://odc.cxthhhhh.com/d/SyStem/Windows_DD_Disks/Disk_Windows_Server_2019_DataCenter_CN_v5.1.vhd.gz" $DebianMirrors "$CXTaddLine" ;;
-    23) echo -e "\nInstall...Windows Server 2016\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; bash ~/Core_Install.sh -a -v 64 -dd "https://odc.cxthhhhh.com/d/SyStem/Windows_DD_Disks/Disk_Windows_Server_2016_DataCenter_CN_v4.12.vhd.gz" $DebianMirrors "$CXTaddLine" ;;
-    24) echo -e "\nInstall...Windows Server 2012 R2\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; bash ~/Core_Install.sh -a -v 64 -dd "https://odc.cxthhhhh.com/d/SyStem/Windows_DD_Disks/Disk_Windows_Server_2012R2_DataCenter_CN_v4.29.vhd.gz" $DebianMirrors "$CXTaddLine" ;;
+    1) echo -e "\nInstall...CentOS 9\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; eval bash ~/Core_Install.sh -a -v 64 -dd "https://odc.cxthhhhh.com/d/SyStem/CentOS/CentOS_9.X_x64_Legacy_NetInstallation_Stable_v1.6.vhd.gz" $DebianMirrors "$CXTaddLine" ;;
+    2) echo -e "\nInstall...CentOS 8\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; eval bash ~/Core_Install.sh -a -v 64 -dd "https://odc.cxthhhhh.com/d/SyStem/CentOS/CentOS_8.X_x64_Legacy_NetInstallation_Stable_v6.8.vhd.gz" $DebianMirrors "$CXTaddLine" ;;
+    3) echo -e "\nInstall...CentOS 7\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; eval bash ~/Core_Install.sh -a -v 64 -dd "https://odc.cxthhhhh.com/d/SyStem/CentOS/CentOS_7.X_x64_Legacy_NetInstallation_Final_v9.8.vhd.gz" $DebianMirrors "$CXTaddLine" ;;
+    4) echo -e "\nInstall...Debian 11\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; eval bash ~/Core_Install.sh -d 10 -a -v 64 $DebianMirrors "$CXTaddLine" ;;
+    5) echo -e "\nInstall...Debian 10\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; eval bash ~/Core_Install.sh -d 11 -a -v 64 $DebianMirrors "$CXTaddLine" ;; 
+    6) echo -e "\nInstall...Debian 10\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; eval bash ~/Core_Install.sh -d 12 -a -v 64 $DebianMirrors "$CXTaddLine" ;; 
+    7) echo -e "\nInstall...OpenWRT\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; eval bash ~/Core_Install.sh -a -v 64 -dd "https://odc.cxthhhhh.com/d/SyStem/OpenWRT-Virtualization-Servers/Stable/openwrt-x86-64-generic-squashfs-combined.img.gz" $DebianMirrors "$CXTaddLine" ;;
+    8) echo -e "\nInstall...Oracle 9\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; eval bash ~/Core_Install.sh -a -v 64 -dd "https://odc.cxthhhhh.com/d/SyStem/Oracle/Oracle_9.X_x64_Legacy_NetInstallation_Stable_v1.8.vhd.gz" $DebianMirrors "$CXTaddLine" ;;
+    9) echo -e "\nInstall...Rocky 9\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; eval bash ~/Core_Install.sh -a -v 64 -dd "https://odc.cxthhhhh.com/d/SyStem/Rocky/Rocky_8.X_x64_Legacy_NetInstallation_Stable_v6.8.vhd.gz" $DebianMirrors "$CXTaddLine" ;;
+    10) echo -e "\nInstall...Rocky 8\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; eval bash ~/Core_Install.sh -a -v 64 -dd "https://odc.cxthhhhh.com/d/SyStem/Rocky/Rocky_8.X_x64_Legacy_NetInstallation_Stable_v6.8.vhd.gz" $DebianMirrors "$CXTaddLine" ;;
+    11) echo -e "\nInstall...Ubuntu 22\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; eval bash ~/Core_Install.sh -u 22.04 -a -v 64 $UbuntuMirrors  "$CXTaddLine" ;;
+    12) echo -e "\nInstall...Ubuntu 20\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; eval bash ~/Core_Install.sh -u 20.04 -a -v 64 $UbuntuMirrors  "$CXTaddLine" ;;
+    21) echo -e "\nInstall...Windows Server 2022\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; eval bash ~/Core_Install.sh -a -v 64 -dd "https://odc.cxthhhhh.com/d/SyStem/Windows_DD_Disks/Disk_Windows_Server_2022_DataCenter_CN_v2.12.vhd.gz" $DebianMirrors "$CXTaddLine" ;;
+    22) echo -e "\nInstall...Windows Server 2019\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; eval bash ~/Core_Install.sh -a -v 64 -dd "https://odc.cxthhhhh.com/d/SyStem/Windows_DD_Disks/Disk_Windows_Server_2019_DataCenter_CN_v5.1.vhd.gz" $DebianMirrors "$CXTaddLine" ;;
+    23) echo -e "\nInstall...Windows Server 2016\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; eval bash ~/Core_Install.sh -a -v 64 -dd "https://odc.cxthhhhh.com/d/SyStem/Windows_DD_Disks/Disk_Windows_Server_2016_DataCenter_CN_v4.12.vhd.gz" $DebianMirrors "$CXTaddLine" ;;
+    24) echo -e "\nInstall...Windows Server 2012 R2\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; eval bash ~/Core_Install.sh -a -v 64 -dd "https://odc.cxthhhhh.com/d/SyStem/Windows_DD_Disks/Disk_Windows_Server_2012R2_DataCenter_CN_v4.29.vhd.gz" $DebianMirrors "$CXTaddLine" ;;
     99) echo "更多系统前往CXT博客及ODC查看。https://www.cxthhhhh.com"; exit 1;;
     100) echo -e "\nInstall...Bare-metal System Deployment Platform(Advanced Users)\n"; read -s -n1 -p "任意键继续(Press any key to continue...)" ; bash ~/Core_Install.sh -a -v 64 -dd "https://odc.cxthhhhh.com/d/SyStem/Bare-metal_System_Deployment_Platform/CXT_Bare-metal_System_Deployment_Platform_v3.6.vhd.gz" $DebianMirrors "$CXTaddLine" ;;
     0) exit 0;;
