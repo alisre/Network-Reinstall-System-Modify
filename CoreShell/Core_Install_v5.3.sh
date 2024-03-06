@@ -184,7 +184,12 @@ function dependence(){
     exit 1;
   fi
 }
-
+function checkaddr(){
+  MyCN=$(wget --no-check-certificate -qO- ipinfo.io | grep "\"country\": \"CN\"")
+  if [[ "$MyCN" != "" ]];then
+     IsCN="Yes"
+  fi
+}
 function selectMirror(){
   [ $# -ge 3 ] || exit 1
   Relese=$(echo "$1" |sed -r 's/(.*)/\L\1/')
@@ -201,6 +206,7 @@ function selectMirror(){
   [ -n "$TEMP" ] || exit 1
   mirrorStatus=0
   declare -A MirrorBackup
+  checkaddr
   MirrorBackup=(["debian0"]="" ["debian1"]="http://deb.debian.org/debian" ["debian2"]="http://archive.debian.org/debian" ["ubuntu0"]="" ["ubuntu1"]="http://archive.ubuntu.com/ubuntu" ["ubuntu2"]="http://ports.ubuntu.com" ["centos0"]="" ["centos1"]="http://mirror.centos.org/centos" ["centos2"]="http://vault.centos.org")
   echo "$New" |grep -q '^http://\|^https://\|^ftp://' && MirrorBackup[${Relese}0]="$New"
   for mirror in $(echo "${!MirrorBackup[@]}" |sed 's/\ /\n/g' |sort -n |grep "^$Relese")
@@ -374,7 +380,7 @@ if [[ -n "$tmpDIST" ]]; then
         [[ "$isDigital" == '16.04' ]] && DIST='xenial';
         [[ "$isDigital" == '18.04' ]] && DIST='bionic';
         [[ "$isDigital" == '20.04' ]] && DIST='focal';
-        [[ "$isDigital" == '22.04' ]] && DIST='jammy';
+        #[[ "$isDigital" == '22.04' ]] && DIST='jammy';
       }
     }
     LinuxMirror=$(selectMirror "$Relese" "$DIST" "$VER" "$tmpMirror")
@@ -480,7 +486,11 @@ else
 fi
 if [[ "$linux_relese" == 'debian' ]]; then
   if [[ "$IncFirmware" == '1' ]]; then
-    wget --no-check-certificate -qO '/tmp/firmware.cpio.gz' "http://cdimage.debian.org/cdimage/unofficial/non-free/firmware/${DIST}/current/firmware.cpio.gz"
+    if [[ "$IsCN" == "Yes" ]];then
+      wget --no-check-certificate -qO '/tmp/firmware.cpio.gz' "https://mirror.nju.edu.cn/debian-cdimage/unofficial/non-free/firmware/${DIST}/current/firmware.cpio.gz"
+    else
+      wget --no-check-certificate -qO '/tmp/firmware.cpio.gz' "http://cdimage.debian.org/cdimage/unofficial/non-free/firmware/${DIST}/current/firmware.cpio.gz"
+    fi
     [[ $? -ne '0' ]] && echo -ne "\033[31mError! \033[0mDownload 'firmware' for \033[33m$linux_relese\033[0m failed! \n" && exit 1
   fi
   if [[ "$ddMode" == '1' ]]; then
